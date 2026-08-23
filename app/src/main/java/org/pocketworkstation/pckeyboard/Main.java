@@ -16,7 +16,11 @@
 
 package org.pocketworkstation.pckeyboard;
 
-import android.app.Activity;
+import androidx.activity.ComponentActivity;
+import androidx.activity.EdgeToEdge;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -32,14 +36,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TextView.BufferType;
 
-public class Main extends Activity {
+public class Main extends ComponentActivity {
 
     private final static String MARKET_URI = "market://search?q=pub:\"Klaus Weidner\"";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        View mainRoot = findViewById(R.id.ll_root);
+        if (mainRoot != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainRoot, (view, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                view.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
+
         String html = getString(R.string.main_body);
         html += "<p><i>Version: " + getString(R.string.auto_version) + "</i></p>";
         Spanned content = Html.fromHtml(html);
@@ -63,7 +78,7 @@ public class Main extends Activity {
             }
         });
         
-        final Activity that = this;
+        final ComponentActivity that = this;
 
         final Button setup4 = (Button) findViewById(R.id.main_setup_btn_input_lang);
         setup4.setOnClickListener(new View.OnClickListener() {

@@ -45,8 +45,6 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -68,6 +66,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,6 +80,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 /**
  * Input method implementation for Qwerty'ish keyboard.
@@ -276,6 +279,7 @@ public class LatinIME extends InputMethodService implements
     // reverting
     private CharSequence mEnteredText;
     private boolean mRefreshKeyboardRequired;
+    private int bottomPadding;
 
     // For each word, a list of potential replacements, usually from voice.
     private Map<String, List<CharSequence>> mWordToSuggestions = new HashMap<String, List<CharSequence>>();
@@ -702,6 +706,28 @@ public class LatinIME extends InputMethodService implements
         mKeyboardSwitcher.setKeyboardMode(KeyboardSwitcher.MODE_TEXT, 0,
                 shouldShowVoiceButton(getCurrentInputEditorInfo()));
         return mKeyboardSwitcher.getInputView();
+    }
+
+    @Override
+    public void setInputView(View view) {
+        if (view != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+                androidx.core.graphics.Insets insets = windowInsets.getInsets(
+                        WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                bottomPadding = insets.bottom;
+                v.setPadding(0, 0, 0, bottomPadding);
+                return WindowInsetsCompat.CONSUMED;
+            });
+            view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View v) {
+                    v.requestApplyInsets();
+                }
+                @Override
+                public void onViewDetachedFromWindow(View v) {}
+            });
+        }
+        super.setInputView(view);
     }
 
     @Override
@@ -1170,6 +1196,8 @@ public class LatinIME extends InputMethodService implements
         super.onComputeInsets(outInsets);
         if (!isFullscreenMode()) {
             outInsets.contentTopInsets = outInsets.visibleTopInsets;
+            outInsets.contentTopInsets += bottomPadding;
+            outInsets.visibleTopInsets += bottomPadding;
         }
     }
 
@@ -1464,7 +1492,9 @@ public class LatinIME extends InputMethodService implements
             // Input method selector is available as a button in the soft key area, so just launch
             // HK settings directly. This also works around the alert dialog being clipped
             // in Android O.
-            startActivity(new Intent(this, LatinIMESettings.class));
+            Intent intent = new Intent(this, LatinIMESettings.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } else {
             // Show an options menu with choices to change input method or open HK settings.
             if (!isShowingOptionDialog()) {
