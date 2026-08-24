@@ -1197,7 +1197,6 @@ public class LatinIME extends InputMethodService implements
         if (!isFullscreenMode()) {
             outInsets.contentTopInsets = outInsets.visibleTopInsets;
             outInsets.contentTopInsets += bottomPadding;
-            outInsets.visibleTopInsets += bottomPadding;
         }
     }
 

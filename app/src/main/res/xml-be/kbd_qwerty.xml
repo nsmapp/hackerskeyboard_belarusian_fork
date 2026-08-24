@@ -67,8 +67,8 @@
             android:popupCharacters="8" />
         <Key
             android:keyLabel="ў"
-            android:popupKeyboard="@xml/kbd_popup_template"
-            android:popupCharacters="9" />
+            android:popupCharacters="9щЩ"
+             />
         <Key
             android:keyLabel="з"
             android:popupKeyboard="@xml/kbd_popup_template"
@@ -128,13 +128,13 @@
         <Key
             android:keyLabel="м" />
         <Key
-            android:keyLabel="і" />
+            android:keyLabel="і"
+            android:popupCharacters="иИ" />
         <Key
             android:keyLabel="т" />
         <Key
             android:keyLabel="ь"
-            android:popupKeyboard="@xml/kbd_popup_template"
-            android:popupCharacters="@string/alternates_for_cyrillic_soft_sign" />
+            android:popupCharacters="ъ\'" />
         <Key
             android:keyLabel="б" />
         <Key
