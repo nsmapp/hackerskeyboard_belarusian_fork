@@ -760,6 +760,10 @@ public class LatinIME extends InputMethodService implements
             mCandidateView.setService(this);
             setCandidatesView(mCandidateViewContainer);
         }
+
+        setCandidatesViewShownInternal(true, false);
+        super.setCandidatesViewShown(true);
+
         return mCandidateViewContainer;
     }
 
@@ -783,7 +787,14 @@ public class LatinIME extends InputMethodService implements
         mDeleteCount = 0;
         mJustAddedAutoSpace = false;
     }
-    
+
+    @Override
+    public void onStartInput(EditorInfo attribute, boolean restarting) {
+        super.onStartInput(attribute, restarting);
+        setCandidatesViewShownInternal(true,false);
+        super.setCandidatesViewShown(true);
+    }
+
     @Override
     public void onStartInputView(EditorInfo attribute, boolean restarting) {
         sKeyboardSettings.editorPackageName = attribute.packageName;
@@ -1196,7 +1207,6 @@ public class LatinIME extends InputMethodService implements
         super.onComputeInsets(outInsets);
         if (!isFullscreenMode()) {
             outInsets.contentTopInsets = outInsets.visibleTopInsets;
-            outInsets.contentTopInsets += bottomPadding;
         }
     }
 
