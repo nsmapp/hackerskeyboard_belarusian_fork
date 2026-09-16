@@ -67,7 +67,7 @@
             android:popupCharacters="8" />
         <Key
             android:keyLabel="ў"
-            android:popupCharacters="9щЩ"
+            android:popupCharacters="9щ"
              />
         <Key
             android:keyLabel="з"
@@ -129,7 +129,7 @@
             android:keyLabel="м" />
         <Key
             android:keyLabel="і"
-            android:popupCharacters="иИ" />
+            android:popupCharacters="и" />
         <Key
             android:keyLabel="т" />
         <Key

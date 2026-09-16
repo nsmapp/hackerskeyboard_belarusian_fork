@@ -1,16 +1,15 @@
 # Hacker's Keyboard (Belarusian Fork)
 
-*   **Дададзена:** Беларуская раскладка.
-*   **Абноўлена:** Бібліятэкі абноўлены да AndroidX, compileSDK падняты да 37.
-*   **Увага:** Праграма працуе, але праз маштабнае абнаўленне кода **магчымыя крытычныя памылкі і нестабільная праца**.
-
----
-
 **Hacker's Keyboard (Belarusian Fork)**
 
-*   **Add:** Added Belarusian keyboard layout.
-*   **Update:** Libraries migrated to AndroidX, compileSDK updated to 37.
-*   **Warning:** The app is functional, but due to the major SDK transition, **critical bugs and stability issues are highly expected**.
+*   **Add:** 
+* - Added Belarusian keyboard layout.
+*   **Update/Fix:** 
+* - Libraries migrated to AndroidX, compileSDK updated to 37.
+* - support edge to edge 
+*   
+* 
+* **Warning:** The app is functional, but due to the major SDK transition, **critical bugs and stability issues are highly expected**.
 
 ---
 
